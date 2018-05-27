@@ -1,0 +1,34 @@
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "ie": "9"
+      }
+    }],
+    "react",
+    "stage-0"
+  ],
+  "plugins": [
+    "transform-decorators-legacy",
+    ["module-resolver", {
+      "alias": {
+        "~": "./src"
+      }
+    }],
+    ["import", { 
+      "libraryName": "antd", 
+      "libraryDirectory": "es",
+      "style": true 
+    }],
+    "lodash"
+  ],
+  "env": {
+    "production": {
+      "plugins": [
+        ["transform-react-remove-prop-types", {
+          "ignoreFilenames": ["node_modules"]
+        }]
+      ]
+    }
+  }
+}
