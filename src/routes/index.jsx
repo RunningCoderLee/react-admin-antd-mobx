@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, StrictMode } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
@@ -15,16 +15,18 @@ moment.locale('zh-cn');
 
 const App = () => (
   <Fragment>
-    <Provider {...rootStore}>
-      <LocaleProvider locale={zhCn}>
-        <Router history={history}>
-          <Switch>
-            <Route path="/user" component={UserLayout} />
-            <Route render={() => <Exception type="404" />} />
-          </Switch>
-        </Router>
-      </LocaleProvider>
-    </Provider>
+    <StrictMode>
+      <Provider {...rootStore}>
+        <LocaleProvider locale={zhCn}>
+          <Router history={history}>
+            <Switch>
+              <Route path="/user" component={UserLayout} />
+              <Route render={() => <Exception type="404" />} />
+            </Switch>
+          </Router>
+        </LocaleProvider>
+      </Provider>
+    </StrictMode>
     {
     process.env.REACT_APP_ENABLE_MOBX_DEV_TOOL === 'true' ?
       <DevTools

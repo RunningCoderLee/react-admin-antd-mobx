@@ -38,13 +38,17 @@ function loginByMobile(req, res) {
   });
 }
 
-// function register(params) {
-//   console.log(params);
-// }
-const user = {
+function register(req, res) {
+  setTimeout(() => {
+    res.json({
+      status: 'ok',
+      token: createToken(USER_TYPE.USER),
+    });
+  }, 1000);
+}
+
+module.exports = {
   loginByAccount,
   loginByMobile,
+  register,
 };
-
-
-module.exports = user;

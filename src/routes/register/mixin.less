@@ -1,0 +1,13 @@
+.password-strength(@color) {
+  .prompt {
+    color: @color;
+  }
+
+  .progress {
+    :global {
+      .ant-progress-bg {
+        background-color: @color;
+      }
+    }
+  }
+}

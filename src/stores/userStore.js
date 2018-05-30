@@ -1,9 +1,9 @@
 import { observable, flow } from 'mobx';
-import Cookies from 'js-cookie';
-import { requestLogin } from '~/service/user';
+import { saveToken, loadToken } from '~/utils/token';
+import { requestLogin, requestRegister } from '~/service/user';
 
 class UserStore {
-  @observable token = Cookies.get('token') || '';
+  @observable token = loadToken();
 
   login = flow(function* login(params) {
     try {
@@ -12,12 +12,25 @@ class UserStore {
         return Promise.resolve(false);
       }
 
-      console.log(token);
+      console.log(token); // eslint-disable-line no-console
 
       this.token = token;
+      saveToken(token);
       return Promise.resolve(true);
     } catch (err) {
-      console.error(err);
+      console.error(err); // eslint-disable-line no-console
+      return Promise.reject(err);
+    }
+  })
+
+  register = flow(function* register(params) {
+    try {
+      const { data: { token } } = yield requestRegister(params);
+      this.token = token;
+      saveToken(token);
+      return Promise.resolve();
+    } catch (err) {
+      console.error(err); // eslint-disable-line no-console
       return Promise.reject(err);
     }
   })

@@ -1,0 +1,71 @@
+@import '~antd/lib/style/themes/default.less';
+@import './mixin.less';
+
+.container {
+  width: 368px;
+  margin: 0 auto;
+
+  h3 {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+}
+
+.captchaButton {
+  width: 100%;
+}
+
+.submit {
+  width: 50%;
+}
+
+.login {
+  float: right;
+  line-height: @btn-height-lg;
+}
+
+.success,
+.warning,
+.error {
+  transition: color 0.3s;
+}
+
+.success {
+  color: @success-color;
+}
+
+.warning {
+  color: @warning-color;
+}
+
+.error {
+  color: @error-color;
+}
+
+.progress {
+  :global {
+    .ant-progress-status-normal {
+      .ant-progress-bg {
+        background-color: @warning-color;
+      }
+    }
+  }
+}
+
+.strength-weak,
+.strength-normal,
+.strength-strong {
+  padding: 4px 0;
+}
+
+.strength-weak {
+  .password-strength(@error-color);
+}
+
+.strength-normal {
+  .password-strength(@warning-color);
+}
+
+.strength-strong {
+  .password-strength(@success-color);
+}

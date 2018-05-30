@@ -3,6 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Tabs, Form, Input, Icon, Row, Col, Button, Checkbox, Alert } from 'antd';
 import { inject, observer } from 'mobx-react';
+import CaptchaButton from '~/components/captchaButton';
 
 import styles from './login.less';
 
@@ -31,17 +32,12 @@ class Login extends Component {
     this.state = {
       autoLogin: false,
       loginType: LOGIN_TYPE.ACCOUNT,
-      count: 0,
       loginError: undefined,
     };
   }
 
   componentWillUnmount() {
     clearInterval(this.timer);
-  }
-
-  beginCountdown = (callback) => {
-    this.setState(prevState => ({ remainTime: prevState.remainTime - 1 }), callback);
   }
 
   handleChangeAutoLogin = () => {
@@ -53,17 +49,7 @@ class Login extends Component {
   }
 
   handleGetCaptcha = () => {
-    let count = 59;
-
-    this.timer = setInterval(() => {
-      count -= 1;
-      this.setState({ count });
-      if (count <= 0) {
-        clearInterval(this.timer);
-      }
-    }, 1000);
-
-    this.setState({ count });
+    console.log('获取验证码！'); // eslint-disable-line no-console
   }
 
   handleSubmit = (e) => {
@@ -78,7 +64,6 @@ class Login extends Component {
     } else {
       valiateFieldNames.push('mobile', 'captcha');
     }
-
 
     validateFields(valiateFieldNames, { force: true }, (errors, values) => {
       if (!errors) {
@@ -98,11 +83,11 @@ class Login extends Component {
   render() {
     const { form: { getFieldDecorator } } = this.props;
     const {
-      autoLogin, loginType, count, loginError,
+      autoLogin, loginType, loginError,
     } = this.state;
 
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit} className={styles.container}>
         <Tabs defaultActiveKey={loginType} onChange={this.handleChangeLoginType} animated={false}>
           <TabPane tab="账号密码登录" key={LOGIN_TYPE.ACCOUNT}>
             {loginError && (loginType === LOGIN_TYPE.ACCOUNT) && this.renderMessage('账户或密码错误（admin/888888）')}
@@ -167,13 +152,11 @@ class Login extends Component {
                   </FormItem>
                 </Col>
                 <Col span={8}>
-                  <Button
+                  <CaptchaButton
                     size="large"
-                    disabled={count}
                     className={styles.getCaptcha}
                     onClick={this.handleGetCaptcha}
-                  >{count ? `${count} 秒` : '获取验证码'}
-                  </Button>
+                  />
                 </Col>
               </Row>
             </FormItem>
@@ -198,6 +181,4 @@ class Login extends Component {
   }
 }
 
-const WrappedLogin = Form.create()(Login);
-
-export default WrappedLogin;
+export default Form.create()(Login);
