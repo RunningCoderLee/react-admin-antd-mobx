@@ -8,10 +8,12 @@ import moment from 'moment';
 import rootStore from '~/stores/index';
 import history from '~/utils/history';
 
-import UserLayout from '~/layouts/user';
-import Exception from '~/components/exception';
+import asyncComponent from '~/components/asyncComponent';
 import Authorization from '~/components/authorization';
 import Test from '~/routes/test';
+
+const AsyncUserLayout = asyncComponent(() => import('~/layouts/user'));
+const AsyncException = asyncComponent(() => import('~/components/exception'));
 
 const { AuthorizedRoute } = Authorization;
 
@@ -24,9 +26,9 @@ const App = () => (
       <LocaleProvider locale={zhCn}>
         <Router history={history}>
           <Switch>
-            <Route path="/user" component={UserLayout} />
+            <Route path="/user" component={AsyncUserLayout} />
             <AuthorizedRoute authority={['admin', 'user']} path="/" redirectPath="/user" component={Test} />
-            <Route render={() => <Exception type="404" />} />
+            <Route render={() => <AsyncException type="404" />} />
           </Switch>
         </Router>
       </LocaleProvider>
