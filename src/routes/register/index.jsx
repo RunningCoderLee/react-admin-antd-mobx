@@ -16,7 +16,7 @@ const passwordStrengthTypeMap = {
   strong: '强',
 };
 
-@inject('userStore')
+@inject('authStore')
 @observer
 @withRouter
 class Register extends Component {
@@ -24,7 +24,7 @@ class Register extends Component {
     form: PropTypes.shape({
       validateFields: PropTypes.func,
     }).isRequired,
-    userStore: PropTypes.shape({}).isRequired,
+    authStore: PropTypes.shape({}).isRequired,
     history: PropTypes.shape({}).isRequired,
   }
 
@@ -84,12 +84,12 @@ class Register extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { form: { validateFields }, userStore, history } = this.props;
+    const { form: { validateFields }, authStore, history } = this.props;
 
     validateFields((errors, values) => {
       if (!errors) {
         this.setState({ registering: true });
-        userStore.register(values)
+        authStore.register(values)
           .then(() => {
             this.setState({ registering: false });
             history.push('/user/register-result', { account: values.email });

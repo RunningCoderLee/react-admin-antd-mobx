@@ -1,4 +1,4 @@
-const { createToken } = require('./token');
+const { createToken, verifyToken } = require('./token');
 
 const USER_TYPE = {
   ADMIN: 'admin',
@@ -47,8 +47,34 @@ function register(req, res) {
   }, 1000);
 }
 
+function getUserInfo(req, res) {
+  const { authentication } = req.headers;
+
+  try {
+    const decoded = verifyToken(authentication);
+    const { userType } = decoded;
+    let name = '';
+
+    if (userType === USER_TYPE.ADMIN) {
+      name = '管理员';
+    }
+
+    if (userType === USER_TYPE.USER) {
+      name = '普通职员';
+    }
+
+    res.json({
+      name,
+      authority: userType,
+    });
+  } catch (err) {
+    res.status(401);
+  }
+}
+
 module.exports = {
   loginByAccount,
   loginByMobile,
   register,
+  getUserInfo,
 };

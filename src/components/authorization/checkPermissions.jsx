@@ -1,6 +1,5 @@
 import React from 'react';
 import PromiseRender from './promiseRender';
-// import { currentAuthority as CURRENT } from './index';
 
 function isPromise(obj) {
   return (
@@ -31,7 +30,6 @@ export function setCurrentAuthority(authority) {
  * @param { 未通过的组件 no pass components } Exception
  */
 const checkPermissions = (authority, target, Exception) => {
-  console.log(`当前权限： ${currentAuthority}`);
   // 没有判定权限.默认查看所有
   // Retirement authority, return target;
   if (!authority) {

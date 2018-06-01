@@ -1,33 +1,20 @@
 import { observable, flow } from 'mobx';
-import { saveToken, loadToken } from '~/utils/token';
-import { requestLogin, requestRegister } from '~/service/user';
+import { setCurrentAuthority } from '~/components/authorization';
+import { loadToken } from '~/utils/token';
+import { requestGetUserInfo } from '~/service/user';
 
 class UserStore {
   @observable token = loadToken();
+  @observable username = '';
 
-  login = flow(function* login(params) {
+  getUserInfo = flow(function* getUserInfo() {
     try {
-      const { data: { status, token } } = yield requestLogin(params);
-      if (status === 'error') {
-        return Promise.resolve(false);
-      }
+      const { name, authority } = yield requestGetUserInfo();
 
-      console.log(token); // eslint-disable-line no-console
+      this.username = name;
 
-      this.token = token;
-      saveToken(token);
-      return Promise.resolve(true);
-    } catch (err) {
-      console.error(err); // eslint-disable-line no-console
-      return Promise.reject(err);
-    }
-  })
+      setCurrentAuthority(authority);
 
-  register = flow(function* register(params) {
-    try {
-      const { data: { token } } = yield requestRegister(params);
-      this.token = token;
-      saveToken(token);
       return Promise.resolve();
     } catch (err) {
       console.error(err); // eslint-disable-line no-console

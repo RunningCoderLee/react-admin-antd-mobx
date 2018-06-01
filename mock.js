@@ -1,4 +1,6 @@
-const { loginByMobile, loginByAccount, register } = require('./mock/user');
+const {
+  loginByMobile, loginByAccount, register, getUserInfo,
+} = require('./mock/user');
 
 const proxy = {
   'GET /api/user': {
@@ -33,6 +35,7 @@ const proxy = {
     res.status(400).json({});
   },
   'POST /api/user/register': register,
+  'GET /api/user/info': getUserInfo,
   'DELETE /api/user/:id': (req, res) => {
     console.log('---->', req.body);
     console.log('---->', req.params.id);

@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import { notification } from 'antd';
 import history from '~/utils/history';
+import { loadToken } from './token';
 
 const CODE_MESSAGE = {
   200: '服务器成功返回请求的数据。',
@@ -28,8 +28,9 @@ const request = axios.create({
 });
 
 request.interceptors.request.use((config) => {
-  if (Cookies.get('token')) {
-    return Object.assign({}, config, { headers: { authentication: Cookies.get('token') } });
+  const token = loadToken();
+  if (token) {
+    return Object.assign({}, config, { headers: { authentication: token } });
   }
 
   return config;

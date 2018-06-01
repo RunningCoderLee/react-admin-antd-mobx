@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const SECRET = 'secret';
 
+
 function createToken(userType) {
   const payload = {
     userType,
@@ -9,12 +10,9 @@ function createToken(userType) {
 
   return jwt.sign(payload, SECRET, {
     issuer: 'react-admin-antd-mobx',
-    expiresIn: 6 * 60,
+    expiresIn: '5m',
   });
 }
-
-// export function parsePayloadFormJWT(token) {
-// }
 
 function verifyToken(token) {
   return jwt.verify(token, SECRET);

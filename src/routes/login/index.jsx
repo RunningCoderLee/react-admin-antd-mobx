@@ -15,7 +15,7 @@ const LOGIN_TYPE = {
   MOBILE: 'mobile',
 };
 
-@inject('userStore')
+@inject('authStore')
 @withRouter
 @observer
 class Login extends Component {
@@ -23,7 +23,7 @@ class Login extends Component {
     form: PropTypes.shape({
       validateFields: PropTypes.func,
     }).isRequired,
-    userStore: PropTypes.shape({}).isRequired,
+    authStore: PropTypes.shape({}).isRequired,
     history: PropTypes.shape({}).isRequired,
   }
 
@@ -56,7 +56,7 @@ class Login extends Component {
     e.preventDefault();
 
     const { loginType } = this.state;
-    const { form: { validateFields }, userStore, history } = this.props;
+    const { form: { validateFields }, authStore, history } = this.props;
     const valiateFieldNames = [];
 
     if (loginType === LOGIN_TYPE.ACCOUNT) {
@@ -67,7 +67,7 @@ class Login extends Component {
 
     validateFields(valiateFieldNames, { force: true }, (errors, values) => {
       if (!errors) {
-        userStore.login(Object.assign({}, values, { type: loginType })).then((result) => {
+        authStore.login(Object.assign({}, values, { type: loginType })).then((result) => {
           if (result) {
             history.replace('/dashboard');
           } else {

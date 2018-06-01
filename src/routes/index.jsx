@@ -10,14 +10,12 @@ import history from '~/utils/history';
 
 import UserLayout from '~/layouts/user';
 import Exception from '~/components/exception';
-import Authorization, { setCurrentAuthority } from '~/components/authorization';
+import Authorization from '~/components/authorization';
 import Test from '~/routes/test';
 
 const { AuthorizedRoute } = Authorization;
 
 moment.locale('zh-cn');
-
-setCurrentAuthority('guest');
 
 const App = () => (
   <Fragment>
