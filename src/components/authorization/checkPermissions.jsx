@@ -10,26 +10,25 @@ function isPromise(obj) {
 }
 
 // 当前权限
-let currentAuthority = null;
+let CURRENT_AUTHORITY = null;
 
 export function setCurrentAuthority(authority) {
   if (typeof authority === 'function') {
-    currentAuthority = authority();
+    CURRENT_AUTHORITY = authority();
   } else if (typeof authority === 'string') {
-    currentAuthority = authority;
+    CURRENT_AUTHORITY = authority;
   } else {
-    currentAuthority = null;
+    CURRENT_AUTHORITY = null;
   }
 }
 /**
  * 通用权限检查方法
  * Common check permissions method
  * @param { 权限判定 Permission judgment type string |array | Promise | Function } authority
- * @param { 你的权限 Your permission description  type:string} currentAuthority
  * @param { 通过的组件 Passing components } target
  * @param { 未通过的组件 no pass components } Exception
  */
-const checkPermissions = (authority, target, Exception) => {
+const checkPermissions = (authority, target, Exception = null) => {
   // 没有判定权限.默认查看所有
   // Retirement authority, return target;
   if (!authority) {
@@ -37,7 +36,7 @@ const checkPermissions = (authority, target, Exception) => {
   }
   // 数组处理
   if (Array.isArray(authority)) {
-    if (authority.indexOf(currentAuthority) >= 0) {
+    if (authority.indexOf(CURRENT_AUTHORITY) >= 0) {
       return target;
     }
     return Exception;
@@ -45,7 +44,7 @@ const checkPermissions = (authority, target, Exception) => {
 
   // string 处理
   if (typeof authority === 'string') {
-    if (authority === currentAuthority) {
+    if (authority === CURRENT_AUTHORITY) {
       return target;
     }
     return Exception;
@@ -59,7 +58,7 @@ const checkPermissions = (authority, target, Exception) => {
   // Function 处理
   if (typeof authority === 'function') {
     try {
-      const bool = authority(currentAuthority);
+      const bool = authority(CURRENT_AUTHORITY);
       if (bool) {
         return target;
       }

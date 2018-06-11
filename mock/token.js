@@ -10,7 +10,7 @@ function createToken(userType) {
 
   return jwt.sign(payload, SECRET, {
     issuer: 'react-admin-antd-mobx',
-    expiresIn: '5m',
+    expiresIn: '5h',
   });
 }
 

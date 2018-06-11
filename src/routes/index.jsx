@@ -10,9 +10,9 @@ import history from '~/utils/history';
 
 import asyncComponent from '~/components/asyncComponent';
 import Authorization from '~/components/authorization';
-import Test from '~/routes/test';
 
 const AsyncUserLayout = asyncComponent(() => import('~/layouts/user'));
+const AsyncBasicLayout = asyncComponent(() => import('~/layouts/basic'));
 const AsyncException = asyncComponent(() => import('~/components/exception'));
 
 const { AuthorizedRoute } = Authorization;
@@ -27,7 +27,7 @@ const App = () => (
         <Router history={history}>
           <Switch>
             <Route path="/user" component={AsyncUserLayout} />
-            <AuthorizedRoute authority={['admin', 'user']} path="/" redirectPath="/user" component={Test} />
+            <AuthorizedRoute authority={['admin', 'user']} path="/" redirectPath="/user" component={AsyncBasicLayout} />
             <Route render={() => <AsyncException type="404" />} />
           </Switch>
         </Router>
