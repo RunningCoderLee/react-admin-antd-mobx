@@ -1,54 +1,25 @@
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import pathToRegexp from 'path-to-regexp';
+
 import { Link, withRouter } from 'react-router-dom';
 import { Layout, Menu, Icon } from 'antd';
 
-import menuData from '~/common/menu';
 import logo from '~/assets/logo.svg';
 import Authorization from '~/components/authorization';
+import { convertUrlToArray } from '~/utils/url';
 
 import styles from './siderMenu.less';
+import { getOpenKeys, getFlatMenuKeys } from './_utils';
 
 const { Sider } = Layout;
 const { SubMenu, Item: MenuItem } = Menu;
 const { check } = Authorization;
 
-function getOpenKeys(menuKeys, paths) {
-  return paths
-    .reduce((openKeys, path) =>
-      [...openKeys, ...menuKeys.filter(key => pathToRegexp(key).test(path))], []);
-}
-
-/**
- * 转换url地址为数组形式
- * '/aaa/bbb/ccc' => ['/aaa', '/aaa/bbb', '/aaa/bbb/ccc']
- *
- * @param {URL} url
- * @reurns
- */
-export function convertUrlToArray(url) {
-  const urlArray = url.split('/');
-  return urlArray.map((item, index, array) => array.slice(0, index + 1).join('/')).slice(1);
-}
-
-
-export function getFlatMenuKeys(menu) {
-  return menu.reduce((keys, menuItem) => {
-    keys.push(menuItem.path);
-    if (menuItem.children) {
-      return [...keys, ...getFlatMenuKeys(menuItem.children)];
-    }
-
-    return keys;
-  }, []);
-}
-
-
 @withRouter
-class SiderMenu extends Component {
+class SiderMenu extends PureComponent {
   static propTypes = {
     collapsed: PropTypes.bool,
+    data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     width: PropTypes.number,
     location: PropTypes.shape({
       pathname: PropTypes.string,
@@ -64,7 +35,7 @@ class SiderMenu extends Component {
 
   constructor(props) {
     super(props);
-    this.menuKeys = getFlatMenuKeys(menuData);
+    this.menuKeys = getFlatMenuKeys(props.data);
     const { location: { pathname } } = props;
 
     this.state = {
@@ -72,7 +43,7 @@ class SiderMenu extends Component {
     };
   }
 
-  isMainMenu = key => menuData.some(item => key && (item.path === key))
+  isMainMenu = key => this.props.data.some(item => key && (item.path === key))
 
   handleOpenChange = (openKeys) => {
     const lastOpenKey = openKeys[openKeys.length - 1];
@@ -146,7 +117,7 @@ class SiderMenu extends Component {
 
   render() {
     const {
-      collapsed, onCollapse, width, location: { pathname },
+      collapsed, data, onCollapse, width, location: { pathname },
     } = this.props;
     const { openKeys } = this.state;
 
@@ -173,7 +144,7 @@ class SiderMenu extends Component {
           mode="inline"
           theme="dark"
         >
-          {this.renderMenuItems(menuData)}
+          {this.renderMenuItems(data)}
         </Menu>
       </Sider>
     );

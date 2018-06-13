@@ -163,7 +163,7 @@ const menuData = [
   },
 ];
 
-function formatter(data, parentPath = '/', parentAuthority) {
+export function formatter(data, parentPath = '/', parentAuthority) {
   return data.map((item) => {
     let { path } = item;
 

@@ -4,7 +4,8 @@ module.exports = {
     amd     : true,
     jquery  : true,
     node    : true,
-    es6     : true
+    es6     : true,
+    jest    : true
   },
   parser: "babel-eslint",
   extends: [
