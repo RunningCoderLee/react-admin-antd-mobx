@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { Layout, Button } from 'antd';
+import { Layout } from 'antd';
 
-// import menuData from '~/common/menu';
+import menuData from '~/common/menu';
+import GlobalHeader from '~/components/globalHeader';
 import SiderMenu from './siderMenu';
 
 import styles from './basicLayout.less';
 
 const {
-  Header, Content, Footer,
+  Content, Footer,
 } = Layout;
 
 class BasicLayout extends Component {
@@ -33,30 +34,27 @@ class BasicLayout extends Component {
           collapsed={collapsed}
           onCollapse={this.handleCollapse}
           width={256}
-          data={[{
-            name: '普通测试页',
-            icon: 'star-o',
-            path: '/test-basic',
-            authority: undefined,
-          }]}
+          data={menuData}
         />
         <Layout className={styles.main} style={mainStyle}>
-          <Header />
-          <Content>
+          <GlobalHeader
+            collapsed={collapsed}
+            onCollapse={this.handleCollapse}
+          />
+          <Content className={styles.content}>
             <div>
-              <Button onClick={this.handleCollapse}>收起菜单</Button>
             ..
               <br />
           Really
               <br />...<br />...<br />...<br />
           long
+              {/* <br />...<br />...<br />...<br />...<br />...<br />...
               <br />...<br />...<br />...<br />...<br />...<br />...
               <br />...<br />...<br />...<br />...<br />...<br />...
               <br />...<br />...<br />...<br />...<br />...<br />...
               <br />...<br />...<br />...<br />...<br />...<br />...
               <br />...<br />...<br />...<br />...<br />...<br />...
-              <br />...<br />...<br />...<br />...<br />...<br />...
-              <br />...<br />...<br />...<br />...<br />...<br />
+              <br />...<br />...<br />...<br />...<br />...<br /> */}
           content
             </div>
           </Content>

@@ -138,7 +138,7 @@ class SiderMenu extends PureComponent {
         </div>
         <Menu
           className={styles.menu}
-          openKeys={openKeys}
+          openKeys={collapsed ? [] : openKeys}
           onOpenChange={this.handleOpenChange}
           selectedKeys={[pathname]}
           mode="inline"
